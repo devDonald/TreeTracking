@@ -7,5 +7,5 @@
     <string name="accept_permission">Acccept all permissions</string>
     <string name="permission_text">Please Click below to accept all permissions for the App to work well</string>
     <string name="app_text">Reporting tree planting(Afforestation) and Tree removal(Deforestation) activities made easy!</string>
-    <string name="click">Click here to Continue</string>
+    <string name="click">Click here to Accept all Permissions</string>
 </resources>

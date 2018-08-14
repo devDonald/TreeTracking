@@ -38,10 +38,7 @@ private Button mAcceptPermission;
                 .withListener(new MultiplePermissionsListener() {
                     @Override public void onPermissionsChecked(MultiplePermissionsReport report) {
                         if (report.areAllPermissionsGranted()) {
-
-                            MDToast.makeText(Permissions.this,"All permissions are granted",
-                                    MDToast.TYPE_INFO,MDToast.LENGTH_LONG).show();
-                            Intent intent = new Intent(Permissions.this, SignIn.class);
+                            Intent intent = new Intent(Permissions.this, Home.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
