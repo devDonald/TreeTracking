@@ -61,6 +61,8 @@ public class AddTree extends AppCompatActivity {
     private String noTrees;
     private String treeType;
     private String id;
+    private String country;
+    private DatabaseReference userRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,13 +70,14 @@ public class AddTree extends AppCompatActivity {
         setContentView(R.layout.activity_add_tree);
 
         mAuth=FirebaseAuth.getInstance();
-        addTreeRef = FirebaseDatabase.getInstance().getReference().child("Afforestation");
-        treeImageRef = FirebaseStorage.getInstance().getReference().child("xvcxvvvcvx");
 
         subtree=FirebaseDatabase.getInstance().getReference();
         //get current user
         user = FirebaseAuth.getInstance().getCurrentUser();
         uid = user.getUid();
+        userRef = FirebaseDatabase.getInstance().getReference().child("Users");
+
+        treeImageRef = FirebaseStorage.getInstance().getReference().child("xvcxvvvcvx");
 
         addTreeImage = findViewById(R.id.iv_add_tree);
         displayTree = findViewById(R.id.iv_treeImages);
@@ -102,9 +105,11 @@ public class AddTree extends AppCompatActivity {
             lastname = bundle.getString("lastname");
             latitude = bundle.getDouble("lat");
             longitude = bundle.getDouble("long");
+            country = bundle.getString("country");
 
         }
 
+        addTreeRef = FirebaseDatabase.getInstance().getReference().child(country).child("Afforestation");
 
         addTreeImage.setOnClickListener(new View.OnClickListener() {
             @Override

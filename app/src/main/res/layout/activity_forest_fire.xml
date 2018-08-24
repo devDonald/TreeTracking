@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.iduma.tree_tracking.Activities.ReportDeforestation">
+    tools:context=".Activities.ForestFire">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,7 +12,7 @@
 
 
         <ImageView
-            android:id="@+id/iv_addtreeImages"
+            android:id="@+id/iv_forest_fire"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_centerHorizontal="true"
@@ -21,22 +21,22 @@
             android:src="@drawable/treee" />
 
         <ImageView
-            android:id="@+id/iv_add_tree1"
+            android:id="@+id/iv_forest_fire1"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_alignBottom="@id/iv_addtreeImages"
-            android:layout_alignEnd="@id/iv_addtreeImages"
-            android:layout_alignRight="@id/iv_addtreeImages"
+            android:layout_alignBottom="@id/iv_forest_fire"
+            android:layout_alignEnd="@id/iv_forest_fire"
+            android:layout_alignRight="@id/iv_forest_fire"
             app:srcCompat="@drawable/ic_photo_camera" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/iv_add_tree1"
+            android:layout_below="@id/iv_forest_fire"
             android:layout_margin="20dp">
 
             <TextView
-                android:id="@+id/tv_tree_coordinates1"
+                android:id="@+id/tv_fire_coordinates"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -47,10 +47,10 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/tv_person_name1"
+                android:id="@+id/tv_person_name2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_tree_coordinates1"
+                android:layout_below="@id/tv_fire_coordinates"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/box"
                 android:fontFamily="sans-serif"
@@ -59,38 +59,27 @@
                 android:textSize="18sp" />
 
             <EditText
-                android:id="@+id/etNoTrees1"
+                android:id="@+id/etfirecause"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_person_name1"
+                android:layout_below="@id/tv_person_name2"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/box"
-                android:hint="@string/noofTrees"
-                android:inputType="number"
+                android:hint="@string/comment"
+                android:inputType="textMultiLine|textCapSentences"
                 android:padding="10dp"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
-            <Spinner
-                android:id="@+id/spTreeType1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/etNoTrees1"
-                android:layout_marginTop="10dp"
-                android:entries="@array/TreeType"
-                android:background="@drawable/box"
-                android:padding="10dp"
-                android:textColor="@android:color/black"
-                android:textSize="18sp" />
 
             <Button
-                android:id="@+id/submit_tree1"
+                android:id="@+id/submit_fire"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/spTreeType1"
+                android:layout_below="@id/etfirecause"
                 android:layout_marginTop="25dp"
                 android:background="@drawable/submitbox"
-                android:text="@string/submitTree1"
+                android:text="@string/reportFire"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />

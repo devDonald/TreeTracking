@@ -14,6 +14,10 @@
             android:icon="@drawable/ic_def"
             android:title="Report Deforestation" />
         <item
+            android:id="@+id/nav_report_fire"
+            android:icon="@drawable/wildfire"
+            android:title="Report Forest Fire" />
+        <item
             android:id="@+id/nav_statistics"
             android:icon="@drawable/stats"
             android:title="Statistics" />

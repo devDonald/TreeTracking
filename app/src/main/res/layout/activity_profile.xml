@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,75 +8,271 @@
     tools:context="com.example.iduma.tree_tracking.Activities.Profile">
 
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/iv_userImage"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="30dp"
-        android:src="@drawable/prof"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/iv_add_userimage"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_alignBottom="@id/iv_userImage"
-        android:layout_alignEnd="@id/iv_userImage"
-        android:layout_alignRight="@id/iv_userImage"
-        app:srcCompat="@drawable/ic_photo_camera" />
-    <TextView
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/iv_add_userimage"
-        android:id="@+id/userName"
-        android:padding="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="User Name"
-        />
-    <TextView
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/userName"
-        android:id="@+id/userLocation"
-        android:padding="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Location"
-        />
-    <TextView
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/userLocation"
-        android:id="@+id/userPointText"
-        android:padding="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Trees planted: "
-        />
-    <TextView
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/userLocation"
-        android:layout_toRightOf="@id/userPointText"
-        android:id="@+id/userPoint"
-        android:padding="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0 "
-        />
-    <Button
-        android:layout_centerHorizontal="true"
-        android:id="@+id/back"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/userPoint"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/submitbox"
-        android:text="@string/ok"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_userImage"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/prof"/>
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/iv_add_userimage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignBottom="@id/iv_userImage"
+            android:layout_alignEnd="@id/iv_userImage"
+            android:layout_alignRight="@id/iv_userImage"
+            app:srcCompat="@drawable/ic_photo_camera" />
+
+        <View
+            android:layout_marginTop="5dp"
+            android:background="@color/green"
+            android:layout_below="@id/iv_add_userimage"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:id="@+id/view2"/>
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/view2"
+            android:id="@+id/userName1"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name: "/>
+        <TextView
+            android:textSize="16sp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/view2"
+            android:layout_toRightOf="@id/userName1"
+            android:id="@+id/userName"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Name"
+            android:textColor="@color/green"
+            android:textStyle="bold"
+            />
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/userName"
+            android:id="@+id/userLocation1"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Country: "
+            />
+        <TextView
+            android:layout_marginLeft="45dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/userName"
+            android:id="@+id/userLocation"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location"
+            android:textColor="@color/green"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_toRightOf="@id/userLocation1"
+            />
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/userLocation"
+            android:id="@+id/userPointText"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trees planted: "
+            />
+        <TextView
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/userLocation"
+            android:layout_toRightOf="@id/userPointText"
+            android:id="@+id/userPoint"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 "
+            android:textSize="16sp"
+            android:textColor="@color/green"
+            />
+
+        <View
+            android:layout_marginTop="5dp"
+            android:background="@color/green"
+            android:layout_below="@id/userPoint"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:id="@+id/view1"/>
+
+        <TextView
+            android:padding="5dp"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/points"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_below="@id/view1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Points"/>
+
+        <View
+            android:layout_marginTop="5dp"
+            android:background="@color/green"
+            android:layout_below="@id/points"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:id="@+id/view3"/>
+
+        <LinearLayout
+            android:layout_marginLeft="40dp"
+            android:layout_below="@id/view3"
+            android:orientation="horizontal"
+            android:id="@+id/pll1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:id="@+id/muta_econs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                />
+            <TextView
+                android:textColor="@color/green"
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Muta"/>
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:id="@+id/muta_points"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                />
+            <TextView
+                android:textColor="@color/green"
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/points"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginLeft="40dp"
+            android:layout_below="@id/pll1"
+            android:orientation="horizontal"
+            android:id="@+id/pll2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:id="@+id/madiba_necons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                />
+            <TextView
+                android:textColor="@color/green"
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Madiba"/>
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:id="@+id/madiba_points"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                />
+            <TextView
+                android:textColor="@color/green"
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/points"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginLeft="40dp"
+            android:layout_below="@id/pll2"
+            android:orientation="horizontal"
+            android:id="@+id/pll3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:id="@+id/ghandi_def"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                />
+            <TextView
+                android:textColor="@color/green"
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Ghandi"/>
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:id="@+id/ghandi_points"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                />
+            <TextView
+                android:textColor="@color/green"
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/points"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_marginTop="5dp"
+            android:background="@color/green"
+            android:layout_below="@id/pll3"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:id="@+id/view4"/>
+
+        <Button
+            android:layout_centerHorizontal="true"
+            android:id="@+id/back"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view4"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/submitbox"
+            android:text="@string/ok"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</ScrollView>

@@ -96,6 +96,7 @@ public class Home extends AppCompatActivity
                 SignUpModel model = dataSnapshot.child(uid).getValue(SignUpModel.class);
                 fName=model.getFirstName();
                 lName=model.getLastName();
+                country = model.getCountry();
 
                 Log.d("lname",""+lName);
             }
@@ -166,6 +167,7 @@ public class Home extends AppCompatActivity
                     addtree.putExtra("long", longitude);
                     addtree.putExtra("firstname", fName);
                     addtree.putExtra("lastname", lName);
+                    addtree.putExtra("country",country);
 
                     startActivity(addtree);
                 } else {
@@ -458,6 +460,7 @@ public class Home extends AppCompatActivity
                 addtree.putExtra("long", longitude);
                 addtree.putExtra("firstname", fName);
                 addtree.putExtra("lastname", lName);
+                addtree.putExtra("country",country);
                 startActivity(addtree);
 
             } else {
@@ -466,7 +469,17 @@ public class Home extends AppCompatActivity
 
         } else if (id == R.id.nav_statistics) {
             Intent statistics = new Intent(Home.this, Statistics.class);
+            statistics.putExtra("country",country);
             startActivity(statistics);
+
+        } else if (id == R.id.nav_report_fire) {
+            Intent fire = new Intent(Home.this, ForestFire.class);
+            fire.putExtra("country",country);
+            fire.putExtra("lat", latitude);
+            fire.putExtra("long", longitude);
+            fire.putExtra("firstname", fName);
+            fire.putExtra("lastname", lName);
+            startActivity(fire);
 
         } else if (id == R.id.nav_report_def) {
             Intent addtree = new Intent(Home.this, ReportDeforestation.class);
@@ -474,11 +487,12 @@ public class Home extends AppCompatActivity
             addtree.putExtra("long", longitude);
             addtree.putExtra("firstname", fName);
             addtree.putExtra("lastname", lName);
-
+            addtree.putExtra("country",country);
             startActivity(addtree);
 
         } else if (id == R.id.nav_profile) {
             Intent profile = new Intent(Home.this, Profile.class);
+            profile.putExtra("country",country);
             startActivity(profile);
 
         } else if (id == R.id.nav_logout) {

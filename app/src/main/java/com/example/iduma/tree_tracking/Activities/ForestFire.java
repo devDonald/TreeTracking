@@ -17,11 +17,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.iduma.tree_tracking.Model.DeforestationModel;
+import com.example.iduma.tree_tracking.Model.FireModel;
 import com.example.iduma.tree_tracking.R;
 import com.example.iduma.tree_tracking.Utility.Util;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,20 +35,21 @@ import com.valdesekamdem.library.mdtoast.MDToast;
 
 import java.io.ByteArrayOutputStream;
 
-public class ReportDeforestation extends AppCompatActivity {
-    private ImageView reportTreeImage;
+public class ForestFire extends AppCompatActivity {
+
+    private ImageView addTreeImage;
     private ImageView displayTree;
     private TextView treeCoordinates;
     private TextView reporterName;
-    private EditText uNoofTrees;
+    private EditText uFireComment;
     private static final int CAMERA_REQUEST_CODE = 1;
     private int CAMERA_PERMISSION_CODE = 24;
     private String firstname, lastname;
     private double latitude, longitude;
-    private AppCompatActivity activity = ReportDeforestation.this;
+    private AppCompatActivity activity = ForestFire.this;
     private Util util = new Util();
     private Button submitTree;
-    private Spinner spTreeType;
+    private FirebaseAuth.AuthStateListener authListener;
     private DatabaseReference addTreeRef;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
@@ -57,33 +57,31 @@ public class ReportDeforestation extends AppCompatActivity {
     private ProgressDialog dialog;
     private StorageReference treeImageRef;
     private DatabaseReference subtree;
-    private String noTrees;
-    private String treeType;
     private String id;
-    private String country;
+    private String country,fireComment;
+    private DatabaseReference userRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_report_deforestation);
+        setContentView(R.layout.activity_forest_fire);
 
         mAuth=FirebaseAuth.getInstance();
 
-        subtree=FirebaseDatabase.getInstance().getReference();
+        subtree= FirebaseDatabase.getInstance().getReference();
         //get current user
         user = FirebaseAuth.getInstance().getCurrentUser();
         uid = user.getUid();
+        userRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
+        treeImageRef = FirebaseStorage.getInstance().getReference().child("xvcxvvvcvx");
 
-        treeImageRef = FirebaseStorage.getInstance().getReference();
-
-        reportTreeImage = findViewById(R.id.iv_add_tree1);
-        displayTree = findViewById(R.id.iv_addtreeImages);
-        treeCoordinates = findViewById(R.id.tv_tree_coordinates1);
-        reporterName = findViewById(R.id.tv_person_name1);
-        uNoofTrees = findViewById(R.id.etNoTrees1);
-        submitTree = findViewById(R.id.submit_tree1);
-        spTreeType = findViewById(R.id.spTreeType1);
+        addTreeImage = findViewById(R.id.iv_forest_fire1);
+        displayTree = findViewById(R.id.iv_forest_fire);
+        treeCoordinates = findViewById(R.id.tv_fire_coordinates);
+        reporterName = findViewById(R.id.tv_person_name2);
+        uFireComment = findViewById(R.id.etfirecause);
+        submitTree = findViewById(R.id.submit_fire);
         dialog= new ProgressDialog(this);
 
 
@@ -107,10 +105,9 @@ public class ReportDeforestation extends AppCompatActivity {
 
         }
 
+        addTreeRef = FirebaseDatabase.getInstance().getReference().child(country).child("Forest Fire");
 
-        addTreeRef = FirebaseDatabase.getInstance().getReference().child(country).child("Deforestation");
-
-        reportTreeImage.setOnClickListener(new View.OnClickListener() {
+        addTreeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -132,16 +129,12 @@ public class ReportDeforestation extends AppCompatActivity {
             public void onClick(View view) {
                 if (util.isNetworkAvailable(activity)) {
 
-                    noTrees = uNoofTrees.getText().toString().trim();
-                    treeType = spTreeType.getItemAtPosition(spTreeType.getSelectedItemPosition()).toString();
+                    fireComment = uFireComment.getText().toString().trim();
 
-                    if (TextUtils.isEmpty(noTrees)){
-                        MDToast.makeText(getApplication(),"Pls Add No of trees",
+                    if (TextUtils.isEmpty(fireComment)){
+                        MDToast.makeText(getApplication(),"Pls Add cause of fire",
                                 MDToast.LENGTH_LONG, MDToast.TYPE_ERROR).show();
-                    } else if (treeType.equalsIgnoreCase("Select the tree type")){
-                        MDToast.makeText(getApplication(),"Pls Select a valid tree type",
-                                MDToast.LENGTH_LONG, MDToast.TYPE_ERROR).show();
-                    } else {
+                    }else {
                         uploadImage();
 
                     }
@@ -152,6 +145,7 @@ public class ReportDeforestation extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     @Override
@@ -184,9 +178,9 @@ public class ReportDeforestation extends AppCompatActivity {
     }
 
     public void uploadImage(){
-        dialog.setMessage("Reporting Deforestation...");
+        dialog.setMessage("Reporting Forest Fire...");
         dialog.show();
-        StorageReference mountainsRef = treeImageRef.child("TreeImages").child(uid).child("image.jpg");
+        StorageReference mountainsRef = treeImageRef.child("FireImages").child(uid).child("image.jpg");
         if (displayTree!=null) {
 
             displayTree.setDrawingCacheEnabled(true);
@@ -202,23 +196,21 @@ public class ReportDeforestation extends AppCompatActivity {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri downloadURI = taskSnapshot.getDownloadUrl();
                     id = addTreeRef.push().getKey();
-                    DeforestationModel model = new DeforestationModel(lastname + " " + firstname,
-                            latitude + ", " + longitude,treeType,noTrees);
+                    FireModel model = new FireModel(uid,lastname + " " + firstname,
+                            latitude + ", " + longitude,fireComment,downloadURI.toString());
                     addTreeRef.child(id).setValue(model);
-                    addTreeRef.child(id).child("uid").setValue(uid);
-                    addTreeRef.child(id).child("treeImage").setValue(downloadURI.toString());
                     dialog.dismiss();
-                    MDToast.makeText(getApplication(),"Deforestation reported Successfully",
+                    MDToast.makeText(getApplication(),"Forest fire Successfully reported",
                             MDToast.LENGTH_LONG, MDToast.TYPE_SUCCESS).show();
 
-                    Intent intent = new Intent(activity, Home.class);
+                    Intent intent = new Intent(ForestFire.this, Home.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
             });
         } else{
-            MDToast.makeText(getApplication(),"Tree image Empty",
+            MDToast.makeText(getApplication(),"forest fire image Empty",
                     MDToast.LENGTH_LONG, MDToast.TYPE_ERROR).show();
         }
 

@@ -4,8 +4,8 @@
     <string name="submitTree">Report Afforestation</string>
     <string name="submitTree1">Report Deforestation</string>
     <string name="ok">OK</string>
-    <string name="accept_permission">Acccept all permissions</string>
-    <string name="permission_text">Please Click below to accept all permissions for the App to work well</string>
-    <string name="app_text">Reporting tree planting(Afforestation) and Tree removal(Deforestation) activities made easy!</string>
     <string name="click">Click here to Accept all Permissions</string>
+    <string name="points">Points</string>
+    <string name="reportFire">Report Forest Fire</string>
+    <string name="comment">Cause of Forest Fire</string>
 </resources>

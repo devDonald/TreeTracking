@@ -1,5 +1,6 @@
 package com.example.iduma.tree_tracking.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -22,7 +23,7 @@ public class Statistics extends AppCompatActivity {
     private TextView tvAfforestEconomics;
     private TextView tvAfforestNonEco;
 
-    private TextView tvDeforestEconomics;
+    private TextView tvDeforestEconomics,tvCountry;
     private TextView tvDeforestNonEco;
     private DatabaseReference treeRef;
     private DatabaseReference defRef;
@@ -37,6 +38,8 @@ public class Statistics extends AppCompatActivity {
     private int defTreeNoEco;
     private int defTreeNoNonEco;
     private Button displayAfforestation;
+    private String country;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +51,19 @@ public class Statistics extends AppCompatActivity {
         displayAfforestation = findViewById(R.id.displayAfforestation);
         tvDeforestEconomics = findViewById(R.id.tvNoOfEcoTreeReported);
         tvDeforestNonEco = findViewById(R.id.tvNoOfNonEcoReported);
+        tvCountry = findViewById(R.id.stats_country);
 
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
 
-        treeRef= FirebaseDatabase.getInstance().getReference().child("Afforestation");
-        defRef = FirebaseDatabase.getInstance().getReference().child("Deforestation");
+        if (bundle != null) {
+            country = bundle.getString("country");
+            tvCountry.setText(country);
+
+        }
+
+        treeRef= FirebaseDatabase.getInstance().getReference().child(country).child("Afforestation");
+        defRef = FirebaseDatabase.getInstance().getReference().child(country).child("Deforestation");
 
         treeRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

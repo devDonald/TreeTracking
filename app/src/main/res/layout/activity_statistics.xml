@@ -7,11 +7,34 @@
     tools:context="com.example.iduma.tree_tracking.Activities.Statistics">
 
     <LinearLayout
+        android:background="@drawable/box"
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
+        <LinearLayout
+            android:background="@color/green"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Country:  "
+                android:textSize="18sp"
+                android:textStyle="normal"
+                />
+            <TextView
+                android:id="@+id/stats_country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" "
+                android:textSize="20sp"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -20,15 +43,15 @@
             android:gravity="center">
 
             <RelativeLayout
-                android:id="@+id/planted_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 >
                 <TextView
+                    android:background="@color/green"
                     android:layout_marginTop="10dp"
                     android:layout_alignParentTop="true"
                     android:id="@+id/tvAfforestTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:textSize="18dp"
@@ -42,7 +65,6 @@
                     android:textStyle="bold"
                     android:text="Economic Trees"/>
                 <TextView
-                    android:fontFamily="casual"
                     android:layout_below="@id/tvEconomicTree"
                     android:id="@+id/tvNoOfTreesP"
                     android:layout_width="wrap_content"
@@ -68,7 +90,6 @@
                     android:textStyle="bold"
                     android:text="Non Economic Trees"/>
                 <TextView
-                    android:fontFamily="casual"
                     android:layout_below="@id/tvNEconomicTreeP"
                     android:id="@+id/tvNoOfTreesPlanted"
                     android:layout_width="wrap_content"
@@ -97,15 +118,16 @@
             android:orientation="vertical"
             android:gravity="center">
             <RelativeLayout
-                android:id="@+id/def_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 >
                 <TextView
+                    android:background="@color/green"
+
                     android:layout_marginTop="10dp"
                     android:layout_alignParentTop="true"
                     android:id="@+id/tvDeforestationTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:textSize="18dp"
@@ -119,7 +141,6 @@
                     android:textStyle="bold"
                     android:text="Economic Trees"/>
                 <TextView
-                    android:fontFamily="casual"
                     android:layout_below="@id/tvEconomicTreeD"
                     android:id="@+id/tvNoOfTreesPD"
                     android:layout_width="wrap_content"
@@ -143,7 +164,6 @@
                     android:textStyle="bold"
                     android:text="Non Economic Trees"/>
                 <TextView
-                    android:fontFamily="casual"
                     android:layout_below="@id/tvNEconomicTreeD"
                     android:id="@+id/tvNoOfTreesReported"
                     android:layout_width="wrap_content"
