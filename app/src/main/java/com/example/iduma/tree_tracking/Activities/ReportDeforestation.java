@@ -21,14 +21,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.iduma.tree_tracking.Model.AllTotal;
 import com.example.iduma.tree_tracking.Model.DeforestationModel;
 import com.example.iduma.tree_tracking.R;
 import com.example.iduma.tree_tracking.Utility.Util;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -206,6 +210,22 @@ public class ReportDeforestation extends AppCompatActivity {
                             latitude + ", " + longitude,treeType,noTrees);
                     addTreeRef.child(id).setValue(model);
                     addTreeRef.child(id).child("uid").setValue(uid);
+                    final DatabaseReference totalNo = FirebaseDatabase.getInstance().getReference().child("Total");
+
+                    totalNo.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            AllTotal allmodel = dataSnapshot.getValue(AllTotal.class);
+                            int def = allmodel.getDeforestation();
+                            def = def+Integer.parseInt(noTrees);
+                            totalNo.child("deforestation").setValue(def);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                     addTreeRef.child(id).child("treeImage").setValue(downloadURI.toString());
                     dialog.dismiss();
                     MDToast.makeText(getApplication(),"Deforestation reported Successfully",

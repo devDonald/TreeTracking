@@ -13,5 +13,6 @@
     <color name="white">#FFFFFF</color>
     <color name="transparent">#00000000</color>
     <color name="green">#3a9435</color>
+    <color name="red">#f5030b</color>
 
 </resources>

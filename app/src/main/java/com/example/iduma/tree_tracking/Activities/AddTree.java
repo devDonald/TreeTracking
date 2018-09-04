@@ -21,14 +21,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.iduma.tree_tracking.Model.AllTotal;
 import com.example.iduma.tree_tracking.Model.PlantingModel;
 import com.example.iduma.tree_tracking.R;
 import com.example.iduma.tree_tracking.Utility.Util;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -206,6 +210,23 @@ public class AddTree extends AppCompatActivity {
                     PlantingModel model = new PlantingModel(uid,lastname + " " + firstname,
                             latitude + ", " + longitude,treeType,noTrees);
                     addTreeRef.child(id).setValue(model);
+                    final DatabaseReference totalNo = FirebaseDatabase.getInstance().getReference().child("Total");
+
+                    totalNo.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            AllTotal allmodel = dataSnapshot.getValue(AllTotal.class);
+                            int aff = allmodel.getAfforestation();
+                            int def = allmodel.getDeforestation();
+                            aff = aff+Integer.parseInt(noTrees);
+                            totalNo.child("afforestation").setValue(aff);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                     dialog.dismiss();
                     addTreeRef.child(id).child("treeImage").setValue(downloadURI.toString());
                     MDToast.makeText(getApplication(),"Tree Added Successfully",

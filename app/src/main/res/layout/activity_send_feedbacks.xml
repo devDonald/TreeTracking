@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activities.SendFeedbacks">
+
+    <TextView
+        android:padding="10dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@color/green"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="General Feedback Regarding the App"/>
+
+    <LinearLayout
+        android:id="@+id/message_area"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:inputType="textMultiLine|textCapSentences"
+            android:layout_marginRight="10dp"
+            android:hint="Type your feedback here"
+            android:id="@+id/feedback_message"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="10dp"
+            />
+        <Button
+            android:layout_margin="10dp"
+            android:background="@color/green"
+            android:text="Submit Feedback"
+            android:id="@+id/send_feedback"
+            android:layout_gravity="end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+</LinearLayout>

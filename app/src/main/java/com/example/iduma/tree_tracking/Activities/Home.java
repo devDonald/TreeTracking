@@ -495,6 +495,13 @@ public class Home extends AppCompatActivity
             profile.putExtra("country",country);
             startActivity(profile);
 
+        }else if (id == R.id.nav_feedback) {
+            Intent feed = new Intent(Home.this, SendFeedbacks.class);
+            feed.putExtra("country",country);
+            feed.putExtra("firstname", fName);
+            feed.putExtra("lastname", lName);
+            startActivity(feed);
+
         } else if (id == R.id.nav_logout) {
             if (util.isNetworkAvailable(activity)) {
                 mAuth.signOut();

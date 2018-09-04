@@ -11,7 +11,7 @@
             android:title="Add Tree" />
         <item
             android:id="@+id/nav_report_def"
-            android:icon="@drawable/ic_def"
+            android:icon="@android:drawable/ic_menu_report_image"
             android:title="Report Deforestation" />
         <item
             android:id="@+id/nav_report_fire"
@@ -25,6 +25,10 @@
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_profile"
             android:title="Profile" />
+        <item
+            android:id="@+id/nav_feedback"
+            android:icon="@android:drawable/ic_menu_send"
+            android:title="Send Feedback" />
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_sign_out"

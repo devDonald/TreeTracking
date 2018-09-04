@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_margin="8dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="20sp"
+            android:textColor="@color/green"
+            android:id="@+id/tv_feedback_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="feedback"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="Sender"
+                android:textSize="15sp"
+                android:id="@+id/tv_feedback_sender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:text="Country"
+                android:textSize="15sp"
+                android:id="@+id/tv_feedback_country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:text="date"
+                android:textSize="15sp"
+                android:id="@+id/tv_feedback_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

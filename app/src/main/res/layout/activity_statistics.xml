@@ -37,12 +37,12 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="50"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center">
 
             <RelativeLayout
+                android:padding="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 >
@@ -113,17 +113,16 @@
         <LinearLayout
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="50"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center">
             <RelativeLayout
+                android:padding="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 >
                 <TextView
-                    android:background="@color/green"
-
+                    android:background="@color/red"
                     android:layout_marginTop="10dp"
                     android:layout_alignParentTop="true"
                     android:id="@+id/tvDeforestationTitle"
@@ -170,6 +169,7 @@
                     android:layout_height="wrap_content"
                     android:text="No of Trees Reported: "/>
                 <TextView
+                    android:layout_marginBottom="20dp"
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@id/tvNoOfTreesReported"
                     android:layout_below="@id/tvNEconomicTreeD"
@@ -179,15 +179,7 @@
                     android:layout_height="wrap_content"
                     android:text=" "/>
 
-                <Button
-                    android:layout_marginTop="20dp"
-                    android:layout_centerHorizontal="true"
-                    android:id="@+id/displayAfforestation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Display"
-                    android:layout_below="@+id/tvNoOfNonEcoReported"
-                    />
+
 
 
 
@@ -195,6 +187,110 @@
 
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <TextView
+                    android:background="@color/green"
+                    android:layout_marginTop="10dp"
+                    android:layout_alignParentTop="true"
+                    android:id="@+id/tvAllTotalTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    android:text="Cumulative Total for All Countries"/>
+
+
+                <TextView
+                    android:background="@color/green"
+                    android:padding="5dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_below="@+id/tvAllTotalTitle"
+                    android:id="@+id/tvTotalAfforestation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Afforestation"/>
+                <TextView
+                    android:padding="5dp"
+                    android:layout_below="@+id/tvTotalAfforestation"
+                    android:id="@+id/tvTextNoAff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total Trees Planted: "/>
+                <TextView
+                    android:padding="5dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/tvTextNoAff"
+                    android:layout_below="@id/tvTotalAfforestation"
+                    android:id="@+id/tvNoAff"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" "/>
+
+                <TextView
+                    android:background="@color/red"
+                    android:padding="5dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_below="@+id/tvNoAff"
+                    android:id="@+id/tvTotaldef"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Deforestation"/>
+                <TextView
+                    android:padding="5dp"
+                    android:layout_below="@+id/tvTotaldef"
+                    android:id="@+id/tvTextNoDef"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total Trees Reported: "/>
+                <TextView
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:layout_below="@id/tvTotaldef"
+                    android:id="@+id/tvNoDef"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/tvTextNoDef"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" "/>
+
+
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_marginTop="5dp"
+            android:background="@color/green"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:id="@+id/view3"/>
+
+        <Button
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:id="@+id/displayAfforestation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Display"
+            />
 
     </LinearLayout>
 
