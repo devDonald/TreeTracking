@@ -125,7 +125,12 @@
         <activity
             android:name=".Activities.ForestFire"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activities.SendFeedbacks"></activity>
+        <activity
+            android:name=".Activities.SendFeedbacks"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".Activities.BoundaryDisputes"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

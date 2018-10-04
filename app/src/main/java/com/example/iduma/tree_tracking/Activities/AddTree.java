@@ -43,9 +43,9 @@ import java.io.ByteArrayOutputStream;
 public class AddTree extends AppCompatActivity {
     private ImageView addTreeImage;
     private ImageView displayTree;
-    private TextView treeCoordinates;
+    private TextView treeCoordinates,mManualAddress;
     private TextView reporterName;
-    private EditText uNoofTrees;
+    private EditText uNoofTrees,mManualLat,mManualLong;
     private static final int CAMERA_REQUEST_CODE = 1;
     private int CAMERA_PERMISSION_CODE = 24;
     private String firstname, lastname;
@@ -65,7 +65,7 @@ public class AddTree extends AppCompatActivity {
     private String noTrees;
     private String treeType;
     private String id;
-    private String country;
+    private String country,mLat,mLong,manualAddress;
     private DatabaseReference userRef;
 
     @Override
@@ -91,6 +91,9 @@ public class AddTree extends AppCompatActivity {
         submitTree = findViewById(R.id.submit_tree);
         spTreeType = findViewById(R.id.spTreeType);
         dialog= new ProgressDialog(this);
+        mManualLat= findViewById(R.id.etAfoManualLat);
+        mManualLong= findViewById(R.id.etAfoManualLong);
+        mManualAddress=findViewById(R.id.etAfoManualAddress);
 
 
         if (ContextCompat.checkSelfPermission(this,
@@ -127,6 +130,8 @@ public class AddTree extends AppCompatActivity {
         });
 
 
+        id = addTreeRef.push().getKey();
+
         treeCoordinates.setText(latitude + ", " + longitude);
         reporterName.setText(lastname + " " + firstname);
 
@@ -136,7 +141,9 @@ public class AddTree extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (util.isNetworkAvailable(activity)) {
-
+                    manualAddress = mManualAddress.getText().toString().trim();
+                    mLat= mManualLat.getText().toString().trim();
+                    mLong = mManualLong.getText().toString().trim();
                     noTrees = uNoofTrees.getText().toString().trim();
                     treeType = spTreeType.getItemAtPosition(spTreeType.getSelectedItemPosition()).toString();
 
@@ -147,7 +154,13 @@ public class AddTree extends AppCompatActivity {
                         MDToast.makeText(getApplication(),"Pls Select a valid tree type",
                                 MDToast.LENGTH_LONG, MDToast.TYPE_ERROR).show();
                     } else {
-                        uploadImage();
+                        try {
+
+                            uploadImage();
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
 
                     }
 
@@ -191,7 +204,7 @@ public class AddTree extends AppCompatActivity {
     public void uploadImage(){
         dialog.setMessage("Reporting Afforestation...");
         dialog.show();
-        StorageReference mountainsRef = treeImageRef.child("TreeImages").child(uid).child("image.jpg");
+        StorageReference mountainsRef = treeImageRef.child("TreeImages").child(uid).child(id).child("image.jpg");
         if (displayTree!=null) {
 
             displayTree.setDrawingCacheEnabled(true);
@@ -206,10 +219,14 @@ public class AddTree extends AppCompatActivity {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri downloadURI = taskSnapshot.getDownloadUrl();
-                    id = addTreeRef.push().getKey();
                     PlantingModel model = new PlantingModel(uid,lastname + " " + firstname,
                             latitude + ", " + longitude,treeType,noTrees);
                     addTreeRef.child(id).setValue(model);
+                    addTreeRef.child(id).child("treeAddress").setValue(manualAddress);
+                    if (mLat!=null && mLong!=null){
+                        addTreeRef.child(id).child("manualLatitude").setValue(mLat);
+                        addTreeRef.child(id).child("manualLongitude").setValue(mLong);
+                    }
                     final DatabaseReference totalNo = FirebaseDatabase.getInstance().getReference().child("Total");
 
                     totalNo.addListenerForSingleValueEvent(new ValueEventListener() {

@@ -53,5 +53,27 @@
     <string name="points">Points</string>
     <string name="reportFire">Report Forest Fire</string>
     <string name="comment">Cause of Forest Fire</string>
+    <string name="report_boundary_dispute_resolution">Boundary Dispute Resolution</string>
+    <string name="logout">Logout</string>
+    <string name="report_boundary_dispute">Report boundary Dispute</string>
+    <string name="send_feedback">Send Feedback</string>
+    <string name="profile">Profile</string>
+    <string name="statistics">Statistics</string>
+    <string name="report_forest_fire">Report Forest Fire</string>
+    <string name="report_deforestation">Report Deforestation</string>
+    <string name="add_tree">Add Tree</string>
+    <string name="name_of_reporter">Name of Reporter</string>
+    <string name="resolution_location">Resolution Location</string>
+    <string name="submit_report">Report Resolution</string>
+    <string name="enter_latitude_optional">Enter latitude(Optional)</string>
+    <string name="enter_longitude_optional">Enter longitude(Optional)</string>
+    <string name="planting_location">Enter your current address</string>
+    <string name="enter_coordinate_manually_optional">Enter Coordinate Manually(Optional)</string>
+    <string name="email_of_witness">Email of witness</string>
+    <string name="name_of_witness">Name of Witness</string>
+    <string name="email_of_disputer_2">Email of Disputer 2</string>
+    <string name="name_of_disputer_2">Name of Disputer 2</string>
+    <string name="email_of_disputer_1">Email of Disputer 1</string>
+    <string name="name_of_disputer_1">Name of Disputer 1</string>
 
 </resources>

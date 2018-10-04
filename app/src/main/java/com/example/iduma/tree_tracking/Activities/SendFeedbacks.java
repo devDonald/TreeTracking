@@ -12,6 +12,8 @@ import android.widget.EditText;
 import com.example.iduma.tree_tracking.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.valdesekamdem.library.mdtoast.MDToast;
@@ -26,6 +28,9 @@ public class SendFeedbacks extends AppCompatActivity {
     private String firstname, lastname, message, country,date;
     private SimpleDateFormat sdf;
     private Calendar c;
+    private FirebaseAuth mAuth;
+    private FirebaseUser user;
+    private String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,9 @@ public class SendFeedbacks extends AppCompatActivity {
         mSendFeedback = findViewById(R.id.send_feedback);
 
         mChats= FirebaseDatabase.getInstance().getReference().child("Feedbacks");
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        uid = user.getUid();
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -63,6 +71,7 @@ public class SendFeedbacks extends AppCompatActivity {
                     FeedbackModel model = new FeedbackModel(message,firstname+" "+lastname,
                             country,date);
                     String id = mChats.push().getKey();
+                    mChats.child(id).child("uid").setValue(uid);
                     mChats.child(id).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

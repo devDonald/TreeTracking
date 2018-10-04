@@ -67,15 +67,72 @@
                 android:background="@drawable/box"
                 android:hint="@string/noofTrees"
                 android:inputType="number"
+                android:imeOptions="actionNext"
                 android:padding="10dp"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
+           <LinearLayout
+               android:background="@drawable/box"
+               android:orientation="vertical"
+               android:layout_below="@id/etNoTrees1"
+               android:id="@+id/etManualCoordinate"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+
+               <TextView
+                   android:padding="10dp"
+                   android:textStyle="bold"
+                   android:textSize="15dp"
+                   android:layout_marginTop="10dp"
+                   android:textColor="@color/green"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:text="@string/enter_coordinate_manually_optional"/>
+
+               <EditText
+                   android:id="@+id/etDefManualLong"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="10dp"
+                   android:background="@drawable/box"
+                   android:hint="@string/enter_longitude_optional"
+                   android:inputType="numberDecimal"
+                   android:padding="10dp"
+                   android:imeOptions="actionNext"
+                   android:textColor="@android:color/black"
+                   android:textSize="18sp" />
+               <EditText
+                   android:id="@+id/etDefManualLat"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="10dp"
+                   android:background="@drawable/box"
+                   android:hint="@string/enter_latitude_optional"
+                   android:inputType="numberDecimal"
+                   android:padding="10dp"
+                   android:imeOptions="actionNext"
+                   android:textColor="@android:color/black"
+                   android:textSize="18sp" />
+               <EditText
+                   android:id="@+id/etDefManualAddress"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="10dp"
+                   android:background="@drawable/box"
+                   android:hint="@string/planting_location"
+                   android:imeOptions="actionNext"
+                   android:inputType="textCapSentences"
+                   android:padding="10dp"
+                   android:textColor="@android:color/black"
+                   android:textSize="18sp" />
+
+           </LinearLayout>
 
             <Spinner
                 android:id="@+id/spTreeType1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/etNoTrees1"
+                android:layout_below="@id/etManualCoordinate"
                 android:layout_marginTop="10dp"
                 android:entries="@array/TreeType"
                 android:background="@drawable/box"

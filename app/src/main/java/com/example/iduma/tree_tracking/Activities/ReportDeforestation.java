@@ -43,12 +43,10 @@ import java.io.ByteArrayOutputStream;
 public class ReportDeforestation extends AppCompatActivity {
     private ImageView reportTreeImage;
     private ImageView displayTree;
-    private TextView treeCoordinates;
-    private TextView reporterName;
-    private EditText uNoofTrees;
+    private TextView treeCoordinates, reporterName;
+    private EditText uNoofTrees,mManualLat,mManualLong,mManualAddress;
     private static final int CAMERA_REQUEST_CODE = 1;
     private int CAMERA_PERMISSION_CODE = 24;
-    private String firstname, lastname;
     private double latitude, longitude;
     private AppCompatActivity activity = ReportDeforestation.this;
     private Util util = new Util();
@@ -57,14 +55,12 @@ public class ReportDeforestation extends AppCompatActivity {
     private DatabaseReference addTreeRef;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
-    private String uid;
+    private String uid,noTrees,treeType,country,id,firstname, lastname, mLat, mLong,manualAddress;
     private ProgressDialog dialog;
     private StorageReference treeImageRef;
     private DatabaseReference subtree;
-    private String noTrees;
-    private String treeType;
-    private String id;
-    private String country;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +85,9 @@ public class ReportDeforestation extends AppCompatActivity {
         submitTree = findViewById(R.id.submit_tree1);
         spTreeType = findViewById(R.id.spTreeType1);
         dialog= new ProgressDialog(this);
+        mManualLat= findViewById(R.id.etDefManualLat);
+        mManualLong= findViewById(R.id.etDefManualLong);
+        mManualAddress = findViewById(R.id.etDefManualAddress);
 
 
         if (ContextCompat.checkSelfPermission(this,
@@ -125,6 +124,7 @@ public class ReportDeforestation extends AppCompatActivity {
             }
         });
 
+        id = addTreeRef.push().getKey();
 
         treeCoordinates.setText(latitude + ", " + longitude);
         reporterName.setText(lastname + " " + firstname);
@@ -135,7 +135,9 @@ public class ReportDeforestation extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (util.isNetworkAvailable(activity)) {
-
+                    manualAddress=mManualAddress.getText().toString().trim();
+                    mLat= mManualLat.getText().toString().trim();
+                    mLong = mManualLong.getText().toString().trim();
                     noTrees = uNoofTrees.getText().toString().trim();
                     treeType = spTreeType.getItemAtPosition(spTreeType.getSelectedItemPosition()).toString();
 
@@ -146,7 +148,11 @@ public class ReportDeforestation extends AppCompatActivity {
                         MDToast.makeText(getApplication(),"Pls Select a valid tree type",
                                 MDToast.LENGTH_LONG, MDToast.TYPE_ERROR).show();
                     } else {
-                        uploadImage();
+                        try {
+                            uploadImage();
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
 
                     }
 
@@ -190,7 +196,7 @@ public class ReportDeforestation extends AppCompatActivity {
     public void uploadImage(){
         dialog.setMessage("Reporting Deforestation...");
         dialog.show();
-        StorageReference mountainsRef = treeImageRef.child("TreeImages").child(uid).child("image.jpg");
+        StorageReference mountainsRef = treeImageRef.child("TreeImages").child(uid).child(id).child("image.jpg");
         if (displayTree!=null) {
 
             displayTree.setDrawingCacheEnabled(true);
@@ -205,10 +211,15 @@ public class ReportDeforestation extends AppCompatActivity {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri downloadURI = taskSnapshot.getDownloadUrl();
-                    id = addTreeRef.push().getKey();
                     DeforestationModel model = new DeforestationModel(lastname + " " + firstname,
                             latitude + ", " + longitude,treeType,noTrees);
+
                     addTreeRef.child(id).setValue(model);
+                    addTreeRef.child(id).child("treeAddress").setValue(manualAddress);
+                    if (mLat!=null && mLong!=null){
+                        addTreeRef.child(id).child("manualLatitude").setValue(mLat);
+                        addTreeRef.child(id).child("manualLongitude").setValue(mLong);
+                    }
                     addTreeRef.child(id).child("uid").setValue(uid);
                     final DatabaseReference totalNo = FirebaseDatabase.getInstance().getReference().child("Total");
 

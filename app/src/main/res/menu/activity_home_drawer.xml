@@ -8,31 +8,35 @@
         <item
             android:id="@+id/nav_add_tree"
             android:icon="@drawable/ic_affo"
-            android:title="Add Tree" />
+            android:title="@string/add_tree" />
         <item
             android:id="@+id/nav_report_def"
             android:icon="@android:drawable/ic_menu_report_image"
-            android:title="Report Deforestation" />
+            android:title="@string/report_deforestation" />
         <item
             android:id="@+id/nav_report_fire"
             android:icon="@drawable/wildfire"
-            android:title="Report Forest Fire" />
+            android:title="@string/report_forest_fire" />
         <item
             android:id="@+id/nav_statistics"
             android:icon="@drawable/stats"
-            android:title="Statistics" />
+            android:title="@string/statistics" />
         <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_profile"
-            android:title="Profile" />
+            android:title="@string/profile" />
         <item
             android:id="@+id/nav_feedback"
             android:icon="@android:drawable/ic_menu_send"
-            android:title="Send Feedback" />
+            android:title="@string/send_feedback" />
+        <item
+            android:id="@+id/nav_boundary_dispute"
+            android:icon="@android:drawable/ic_menu_report_image"
+            android:title="@string/report_boundary_dispute" />
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_sign_out"
-            android:title="Logout" />
+            android:title="@string/logout" />
     </group>
 
 </menu>

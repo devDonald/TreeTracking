@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activities.BoundaryDisputes">
+
+    <LinearLayout
+
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/boundary_title"
+            android:textStyle="bold"
+            android:textColor="@color/green"
+            android:textSize="20sp"
+            android:text="@string/report_boundary_dispute_resolution"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/bd_treeImages"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="14dp"
+                android:src="@drawable/treee" />
+
+            <ImageView
+                android:id="@+id/bd_add_tree"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignBottom="@id/bd_treeImages"
+                android:layout_alignEnd="@id/bd_treeImages"
+                android:layout_alignRight="@id/bd_treeImages"
+                app:srcCompat="@drawable/ic_photo_camera" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/bd_add_tree"
+                android:layout_margin="20dp">
+
+                <TextView
+                    android:id="@+id/bd_tree_coordinates"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/box"
+                    android:fontFamily="sans-serif"
+                    android:padding="10dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/bd_person_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/bd_tree_coordinates"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/box"
+                    android:fontFamily="sans-serif"
+                    android:padding="10dp"
+                    android:imeOptions="actionNext"
+                    android:hint="@string/name_of_reporter"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/bd_resolution_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/bd_person_name"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/box"
+                    android:hint="@string/resolution_location"
+                    android:inputType="textCapWords"
+                    android:padding="10dp"
+                    android:imeOptions="actionNext"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+                <LinearLayout
+                    android:background="@drawable/box"
+                    android:orientation="vertical"
+                    android:layout_below="@id/bd_resolution_location"
+                    android:id="@+id/db_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:padding="10dp"
+                        android:textStyle="bold"
+                        android:textSize="15dp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/green"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/enter_coordinate_manually_optional"/>
+
+                    <EditText
+                        android:id="@+id/bdManualLong"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/box"
+                        android:hint="@string/enter_longitude_optional"
+                        android:inputType="numberDecimal"
+                        android:padding="10dp"
+                        android:imeOptions="actionNext"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+                    <EditText
+                        android:id="@+id/bdManualLat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/box"
+                        android:hint="@string/enter_latitude_optional"
+                        android:inputType="numberDecimal"
+                        android:padding="10dp"
+                        android:imeOptions="actionNext"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+
+
+                </LinearLayout>
+
+
+                <Spinner
+                    android:id="@+id/bd_spTreeType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/db_ll"
+                    android:layout_marginTop="10dp"
+                    android:entries="@array/TreeType"
+                    android:background="@drawable/box"
+                    android:padding="10dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+                <LinearLayout
+                    android:background="@drawable/box"
+                    android:orientation="vertical"
+                    android:layout_below="@id/bd_spTreeType"
+                    android:id="@+id/db_ll2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/dbDisputerName1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/box"
+                        android:hint="@string/name_of_disputer_1"
+                        android:inputType="textCapWords"
+                        android:padding="10dp"
+                        android:imeOptions="actionNext"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+                    <EditText
+                        android:id="@+id/dbDisputerEmail1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/box"
+                        android:hint="@string/email_of_disputer_1"
+                        android:inputType="textEmailAddress"
+                        android:padding="10dp"
+                        android:imeOptions="actionNext"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/bd_treeImages1"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="14dp"
+                        android:src="@drawable/treee" />
+
+                    <ImageView
+                        android:id="@+id/bd_add_tree1"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_alignBottom="@id/bd_treeImages1"
+                        android:layout_alignEnd="@id/bd_treeImages1"
+                        android:layout_alignRight="@id/bd_treeImages1"
+                        app:srcCompat="@drawable/ic_photo_camera" />
+                    </RelativeLayout>
+                    <EditText
+                        android:id="@+id/dbDisputerName2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/box"
+                        android:hint="@string/name_of_disputer_2"
+                        android:inputType="textCapWords"
+                        android:padding="10dp"
+                        android:imeOptions="actionNext"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+                    <EditText
+                        android:id="@+id/dbDisputerEmail2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/box"
+                        android:hint="@string/email_of_disputer_2"
+                        android:inputType="textEmailAddress"
+                        android:padding="10dp"
+                        android:imeOptions="actionNext"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/bd_treeImages2"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="14dp"
+                        android:src="@drawable/treee" />
+
+                    <ImageView
+                        android:id="@+id/bd_add_tree2"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_alignBottom="@id/bd_treeImages2"
+                        android:layout_alignEnd="@id/bd_treeImages2"
+                        android:layout_alignRight="@id/bd_treeImages2"
+                        app:srcCompat="@drawable/ic_photo_camera" />
+                    </RelativeLayout>
+                    <EditText
+                        android:id="@+id/dbDisputeWitnessName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/box"
+                        android:hint="@string/name_of_witness"
+                        android:inputType="textCapWords"
+                        android:padding="10dp"
+                        android:imeOptions="actionNext"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+                    <EditText
+                        android:id="@+id/dbDisputeWitnessEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/box"
+                        android:hint="@string/email_of_witness"
+                        android:inputType="textEmailAddress"
+                        android:padding="10dp"
+                        android:imeOptions="actionNext"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+
+                    <EditText
+                        android:id="@+id/bdNoTrees"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/box"
+                        android:hint="@string/noofTrees"
+                        android:inputType="number"
+                        android:padding="10dp"
+                        android:imeOptions="actionDone"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/bd_submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/db_ll2"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/submitbox"
+                    android:text="@string/submit_report"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+
+    </LinearLayout>
+
+</ScrollView>

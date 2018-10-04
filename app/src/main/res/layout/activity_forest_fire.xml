@@ -68,15 +68,73 @@
                 android:hint="@string/comment"
                 android:inputType="textMultiLine|textCapSentences"
                 android:padding="10dp"
+                android:imeOptions="actionNext"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
+            <LinearLayout
+                android:background="@drawable/box"
+                android:orientation="vertical"
+                android:layout_below="@id/etfirecause"
+                android:id="@+id/ll_forest_fire"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
+                <TextView
+                    android:padding="10dp"
+                    android:textStyle="bold"
+                    android:textSize="15dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/green"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Enter Coordinate Manually(Optional)"/>
+
+                <EditText
+                    android:id="@+id/etffManualLong"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/box"
+                    android:hint="Enter longitude(Optional)"
+                    android:inputType="number"
+                    android:padding="10dp"
+                    android:imeOptions="actionNext"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+                <EditText
+                    android:id="@+id/etffManualLat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/box"
+                    android:hint="Enter latitude(Optional)"
+                    android:inputType="number"
+                    android:imeOptions="actionNext"
+                    android:padding="10dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/etFireAddress"
+                android:layout_below="@id/ll_forest_fire"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/box"
+                android:hint="Enter Fire Address"
+                android:inputType="number"
+                android:imeOptions="actionDone"
+                android:padding="10dp"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
 
             <Button
                 android:id="@+id/submit_fire"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/etfirecause"
+                android:layout_below="@id/etFireAddress"
                 android:layout_marginTop="25dp"
                 android:background="@drawable/submitbox"
                 android:text="@string/reportFire"

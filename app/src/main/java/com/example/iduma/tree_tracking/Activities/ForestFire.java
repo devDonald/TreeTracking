@@ -41,7 +41,7 @@ public class ForestFire extends AppCompatActivity {
     private ImageView displayTree;
     private TextView treeCoordinates;
     private TextView reporterName;
-    private EditText uFireComment;
+    private EditText uFireComment,etFireAddress,mManualLat,mManualLong;
     private static final int CAMERA_REQUEST_CODE = 1;
     private int CAMERA_PERMISSION_CODE = 24;
     private String firstname, lastname;
@@ -58,7 +58,7 @@ public class ForestFire extends AppCompatActivity {
     private StorageReference treeImageRef;
     private DatabaseReference subtree;
     private String id;
-    private String country,fireComment;
+    private String country,fireComment,mLat,mLong,mFireAddress;
     private DatabaseReference userRef;
 
     @Override
@@ -83,6 +83,9 @@ public class ForestFire extends AppCompatActivity {
         uFireComment = findViewById(R.id.etfirecause);
         submitTree = findViewById(R.id.submit_fire);
         dialog= new ProgressDialog(this);
+        mManualLat= findViewById(R.id.etffManualLat);
+        mManualLong= findViewById(R.id.etffManualLong);
+        etFireAddress= findViewById(R.id.etFireAddress);
 
 
         if (ContextCompat.checkSelfPermission(this,
@@ -119,6 +122,7 @@ public class ForestFire extends AppCompatActivity {
         });
 
 
+        id = addTreeRef.push().getKey();
         treeCoordinates.setText(latitude + ", " + longitude);
         reporterName.setText(lastname + " " + firstname);
 
@@ -130,6 +134,9 @@ public class ForestFire extends AppCompatActivity {
                 if (util.isNetworkAvailable(activity)) {
 
                     fireComment = uFireComment.getText().toString().trim();
+                    mLat= mManualLat.getText().toString().trim();
+                    mLong = mManualLong.getText().toString().trim();
+                    mFireAddress = etFireAddress.getText().toString().trim();
 
                     if (TextUtils.isEmpty(fireComment)){
                         MDToast.makeText(getApplication(),"Pls Add cause of fire",
@@ -180,7 +187,7 @@ public class ForestFire extends AppCompatActivity {
     public void uploadImage(){
         dialog.setMessage("Reporting Forest Fire...");
         dialog.show();
-        StorageReference mountainsRef = treeImageRef.child("FireImages").child(uid).child("image.jpg");
+        StorageReference mountainsRef = treeImageRef.child("FireImages").child(uid).child(id).child("image.jpg");
         if (displayTree!=null) {
 
             displayTree.setDrawingCacheEnabled(true);
@@ -195,10 +202,14 @@ public class ForestFire extends AppCompatActivity {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri downloadURI = taskSnapshot.getDownloadUrl();
-                    id = addTreeRef.push().getKey();
                     FireModel model = new FireModel(uid,lastname + " " + firstname,
                             latitude + ", " + longitude,fireComment,downloadURI.toString());
                     addTreeRef.child(id).setValue(model);
+                    addTreeRef.child(id).child("fireLocation").setValue(mFireAddress);
+                    if (mLat!=null && mLong!=null){
+                        addTreeRef.child(id).child("manualLatitude").setValue(mLat);
+                        addTreeRef.child(id).child("manualLongitude").setValue(mLong);
+                    }
                     dialog.dismiss();
                     MDToast.makeText(getApplication(),"Forest fire Successfully reported",
                             MDToast.LENGTH_LONG, MDToast.TYPE_SUCCESS).show();

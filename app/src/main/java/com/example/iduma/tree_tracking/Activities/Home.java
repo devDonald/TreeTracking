@@ -502,7 +502,18 @@ public class Home extends AppCompatActivity
             feed.putExtra("lastname", lName);
             startActivity(feed);
 
-        } else if (id == R.id.nav_logout) {
+        } else if (id == R.id.nav_boundary_dispute) {
+            Intent bound_dispute = new Intent(Home.this, BoundaryDisputes.class);
+            bound_dispute.putExtra("country",country);
+            bound_dispute.putExtra("firstname", fName);
+            bound_dispute.putExtra("lastname", lName);
+            bound_dispute.putExtra("lat", latitude);
+            bound_dispute.putExtra("long", longitude);
+            startActivity(bound_dispute);
+
+        }
+
+        else if (id == R.id.nav_logout) {
             if (util.isNetworkAvailable(activity)) {
                 mAuth.signOut();
 
