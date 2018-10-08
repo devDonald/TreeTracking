@@ -3,13 +3,16 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.example.iduma.tree_tracking"
+        applicationId "com.seldavine.tree_tracking"
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        dexOptions {
+            jumboMode true
+        }
     }
     buildTypes {
         release {
@@ -20,7 +23,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.google.firebase:firebase-database:11.8.0'
@@ -51,6 +54,7 @@ dependencies {
     implementation 'com.karumi:dexter:5.0.0'
     implementation 'com.android.support:support-annotations:27.1.1'
     implementation 'com.android.support:multidex:1.0.0'
+    implementation files('libs/activation.jar')
 }
 
 

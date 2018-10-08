@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.iduma.tree_tracking.Activities.Statistics">
+    tools:context=".Activities.Statistics">
 
     <LinearLayout
         android:background="@drawable/box"

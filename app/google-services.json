@@ -57,6 +57,50 @@
           "status": 2
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:585264794767:android:b5c21c4c1e04d30f",
+        "android_client_info": {
+          "package_name": "com.seldavine.tree_tracking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "585264794767-e8dc5qlp52r4ng2dqpmn9kvdusfpnacv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.seldavine.tree_tracking",
+            "certificate_hash": "f28c209a7cfa20afe3171b6a6935db447ea4627e"
+          }
+        },
+        {
+          "client_id": "585264794767-58f7sfu8dppa502bbcnko7qbpq96fin7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFIpefSPPD_nwgrmmmXFH16RQ5v62RFEw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "585264794767-58f7sfu8dppa502bbcnko7qbpq96fin7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
     }
   ],
   "configuration_version": "1"
