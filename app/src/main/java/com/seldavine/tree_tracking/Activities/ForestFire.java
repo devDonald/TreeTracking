@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,7 +22,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.seldavine.tree_tracking.Model.FireModel;
 import com.seldavine.tree_tracking.R;
 import com.seldavine.tree_tracking.Utility.Util;
@@ -61,6 +66,7 @@ public class ForestFire extends AppCompatActivity {
     private String id;
     private String country,fireComment,mLat,mLong,mFireAddress;
     private DatabaseReference userRef;
+    private KProgressHUD hud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +93,17 @@ public class ForestFire extends AppCompatActivity {
         mManualLat= findViewById(R.id.etffManualLat);
         mManualLong= findViewById(R.id.etffManualLong);
         etFireAddress= findViewById(R.id.etFireAddress);
+
+        hud = KProgressHUD.create(ForestFire.this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please Wait")
+                .setDetailsLabel("Reporting Forest Fire...")
+                .setCancellable(true)
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f)
+                .setBackgroundColor(Color.GREEN)
+                .setAutoDismiss(true);
+
 
 
         if (ContextCompat.checkSelfPermission(this,
@@ -186,9 +203,8 @@ public class ForestFire extends AppCompatActivity {
     }
 
     public void uploadImage(){
-        dialog.setMessage("Reporting Forest Fire...");
-        dialog.show();
-        StorageReference mountainsRef = treeImageRef.child("FireImages").child(uid).child(id).child("image.jpg");
+       hud.show();
+        final StorageReference mountainsRef = treeImageRef.child("FireImages").child(uid).child(id).child("image.jpg");
         if (displayTree!=null) {
 
             displayTree.setDrawingCacheEnabled(true);
@@ -199,10 +215,20 @@ public class ForestFire extends AppCompatActivity {
             byte[] data = baos.toByteArray();
 
             UploadTask uploadTask = mountainsRef.putBytes(data);
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+            Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Uri downloadURI = taskSnapshot.getDownloadUrl();
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()){
+                        throw task.getException();
+                    }
+                    return mountainsRef.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    Uri downloadURI = task.getResult();
+
                     FireModel model = new FireModel(uid,lastname + " " + firstname,
                             latitude + ", " + longitude,fireComment,downloadURI.toString());
                     addTreeRef.child(id).setValue(model);
@@ -211,7 +237,7 @@ public class ForestFire extends AppCompatActivity {
                         addTreeRef.child(id).child("manualLatitude").setValue(mLat);
                         addTreeRef.child(id).child("manualLongitude").setValue(mLong);
                     }
-                    dialog.dismiss();
+                    hud.dismiss();
                     MDToast.makeText(getApplication(),"Forest fire Successfully reported",
                             MDToast.LENGTH_LONG, MDToast.TYPE_SUCCESS).show();
 
@@ -221,6 +247,7 @@ public class ForestFire extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+
         } else{
             MDToast.makeText(getApplication(),"forest fire image Empty",
                     MDToast.LENGTH_LONG, MDToast.TYPE_ERROR).show();

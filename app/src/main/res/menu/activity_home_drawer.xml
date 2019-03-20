@@ -34,6 +34,11 @@
             android:icon="@android:drawable/ic_menu_report_image"
             android:title="@string/report_boundary_dispute" />
         <item
+            android:id="@+id/nav_about_us"
+            android:icon="@drawable/ic_about_us"
+            android:title="@string/about_us"
+            />
+        <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_sign_out"
             android:title="@string/logout" />

@@ -5,12 +5,14 @@ import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,7 +22,10 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.seldavine.tree_tracking.Model.AllTotal;
 import com.seldavine.tree_tracking.Model.BoundaryModel;
 import com.seldavine.tree_tracking.R;
@@ -63,6 +69,7 @@ public class BoundaryDisputes extends AppCompatActivity {
     private String uid, postDate;
     private Uri uri_image1,uri_image2;
     private GMailSender sender;
+    private KProgressHUD hud;
 
 
 
@@ -101,6 +108,15 @@ public class BoundaryDisputes extends AppCompatActivity {
         sender = new GMailSender("treetrackingapp@gmail.com", "fellowship");
 
 
+        hud = KProgressHUD.create(BoundaryDisputes.this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please Wait")
+                .setDetailsLabel("Reporting dispute resolution...")
+                .setCancellable(true)
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f)
+                .setBackgroundColor(Color.GREEN)
+                .setAutoDismiss(true);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
 
                 Builder().permitAll().build();
@@ -251,7 +267,7 @@ public class BoundaryDisputes extends AppCompatActivity {
             Bitmap bitmap= (Bitmap)data.getExtras().get("data");
             displayTree1.setImageBitmap(bitmap);
 
-            StorageReference mountainsRef2 = boundaryImages.child(uid).child(id).child("image1.jpg");
+            final StorageReference mountainsRef2 = boundaryImages.child(uid).child(id).child("image1.jpg");
             if (displayTree1!=null) {
 
                 displayTree1.setDrawingCacheEnabled(true);
@@ -262,12 +278,23 @@ public class BoundaryDisputes extends AppCompatActivity {
                 byte[] data1 = baos.toByteArray();
 
                 UploadTask uploadTask = mountainsRef2.putBytes(data1);
-                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+                Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                     @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        uri_image1 = taskSnapshot.getDownloadUrl();
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+
+                        if (!task.isSuccessful()){
+                            throw task.getException();
+                        }
+                        return mountainsRef2.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        uri_image1 = task.getResult();
                     }
                 });
+
             }
 
 
@@ -277,7 +304,7 @@ public class BoundaryDisputes extends AppCompatActivity {
             Bitmap bitmap= (Bitmap)data.getExtras().get("data");
             displayTree2.setImageBitmap(bitmap);
 
-            StorageReference mountainsRef2 = boundaryImages.child(uid).child(id).child("image2.jpg");
+            final StorageReference mountainsRef3 = boundaryImages.child(uid).child(id).child("image2.jpg");
             if (displayTree2!=null) {
 
                 displayTree2.setDrawingCacheEnabled(true);
@@ -287,11 +314,21 @@ public class BoundaryDisputes extends AppCompatActivity {
                 bitmap2.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] data1 = baos.toByteArray();
 
-                UploadTask uploadTask = mountainsRef2.putBytes(data1);
-                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                UploadTask uploadTask = mountainsRef3.putBytes(data1);
+
+                Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                     @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        uri_image2 = taskSnapshot.getDownloadUrl();
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if (!task.isSuccessful()){
+                            throw task.getException();
+                        }
+                        return mountainsRef3.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        uri_image2 = task.getResult();
+
                     }
                 });
             }
@@ -301,9 +338,8 @@ public class BoundaryDisputes extends AppCompatActivity {
     }
 
     public void reportResolution(){
-        dialog.setMessage("Reporting dispute resolution...");
-        dialog.show();
-        StorageReference mountainsRef = boundaryImages.child(uid).child(id).child("image.jpg");
+        hud.show();
+        final StorageReference mountainsRef = boundaryImages.child(uid).child(id).child("image.jpg");
         if (displayTree!=null) {
 
             displayTree.setDrawingCacheEnabled(true);
@@ -314,10 +350,19 @@ public class BoundaryDisputes extends AppCompatActivity {
             byte[] data = baos.toByteArray();
 
             UploadTask uploadTask = mountainsRef.putBytes(data);
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+            Task<Uri> uriTask1 = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Uri downloadURI = taskSnapshot.getDownloadUrl();
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()){
+                        throw task.getException();
+                    }
+                    return mountainsRef.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    Uri downloadURI = task.getResult();
 
                     BoundaryModel model = new BoundaryModel(uid,lastname + " " + firstname,
                             latitude, longitude,disputerName1,disputerName2,dispute_location,
@@ -346,7 +391,7 @@ public class BoundaryDisputes extends AppCompatActivity {
 
                         }
                     });
-                    dialog.dismiss();
+                    hud.dismiss();
                     try {
                         new MyAsyncClass().execute();
                     }catch (Exception e){
@@ -362,6 +407,7 @@ public class BoundaryDisputes extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+
         } else{
             MDToast.makeText(getApplication(),"image Empty",
                     MDToast.LENGTH_LONG, MDToast.TYPE_ERROR).show();

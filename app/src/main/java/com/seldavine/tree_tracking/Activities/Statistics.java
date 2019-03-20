@@ -22,7 +22,7 @@ public class Statistics extends AppCompatActivity {
 
     private Button btnRetrieve;
     private TextView tvAfforestEconomics,tvAllAfforestation,tvAllDeforestation;
-    private TextView tvAfforestNonEco;
+    private TextView tvAfforestNonEco,tv_volumeOfCo2;
 
     private TextView tvDeforestEconomics,tvCountry;
     private TextView tvDeforestNonEco;
@@ -33,12 +33,13 @@ public class Statistics extends AppCompatActivity {
     private String noEcoDefTree;
     private String noNonEcoDefTree;
     private String treeType;
-    private String treeTypeDef;
+    private String treeTypeDef,st_volume_co2;
     private int treenoEco, totalAfforestation,totalDeforestation;
     private int treenoNonEco;
     private int defTreeNoEco;
-    private int defTreeNoNonEco;
+    private int defTreeNoNonEco,int_volume_co2;
     private Button displayAfforestation;
+    private DatabaseReference userRef;
     private String country;
 
 
@@ -55,121 +56,144 @@ public class Statistics extends AppCompatActivity {
         tvCountry = findViewById(R.id.stats_country);
         tvAllAfforestation = findViewById(R.id.tvNoAff);
         tvAllDeforestation = findViewById(R.id.tvNoDef);
+        tv_volumeOfCo2 = findViewById(R.id.tv_volume_co2);
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
-        if (bundle != null) {
-            country = bundle.getString("country");
-            tvCountry.setText(country);
+       try {
+           if (bundle != null) {
+               country = bundle.getString("country");
+               tvCountry.setText(country);
 
-        }
+           }
 
-        allAdditionRef = FirebaseDatabase.getInstance().getReference().child("Total");
-        treeRef= FirebaseDatabase.getInstance().getReference().child(country).child("Afforestation");
-        defRef = FirebaseDatabase.getInstance().getReference().child(country).child("Deforestation");
+       }catch (Exception e){
+           e.printStackTrace();
+       }
 
-
-        allAdditionRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                AllTotal allmodel = dataSnapshot.getValue(AllTotal.class);
-                totalAfforestation = allmodel.getAfforestation();
-                totalDeforestation = allmodel.getDeforestation();
+       try {
+           allAdditionRef = FirebaseDatabase.getInstance().getReference().child("Total");
+           treeRef= FirebaseDatabase.getInstance().getReference().child(country).child("Afforestation");
+           defRef = FirebaseDatabase.getInstance().getReference().child(country).child("Deforestation");
 
 
-            }
+           allAdditionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+               @Override
+               public void onDataChange(DataSnapshot dataSnapshot) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                   AllTotal allmodel = dataSnapshot.getValue(AllTotal.class);
+                   totalAfforestation = allmodel.getAfforestation();
+                   totalDeforestation = allmodel.getDeforestation();
 
-            }
-        });
-        treeRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                treenoEco=0;
-                treenoNonEco=0;
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    PlantingModel model = ds.getValue(PlantingModel.class);
-                    treeType = model.getTypeOfTrees();
-                    if (treeType.matches("Economic")) {
-                        noEcoAffoTree = model.getNoOfTrees();
-                        //Log.d("ecotree",""+noEcoAffoTree);
-                        treenoEco = treenoEco + Integer.parseInt(noEcoAffoTree);
-                    } else if (treeType.matches("Non Economics")) {
-                        noNEcoAffoTree = model.getNoOfTrees();
-                        treenoNonEco = treenoNonEco + Integer.parseInt(noNEcoAffoTree);
+                   int_volume_co2 = totalAfforestation * 25;
+                   tv_volumeOfCo2.setText("Average volume of CO2 Absorbed by Reported Trees per year  = "+int_volume_co2);
+               }
 
-                    }
-                }
-            }
+               @Override
+               public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+               }
+           });
+           treeRef.addListenerForSingleValueEvent(new ValueEventListener() {
+               @Override
+               public void onDataChange(DataSnapshot dataSnapshot) {
+                   try {
+                       treenoEco=0;
+                       treenoNonEco=0;
+                       for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                           PlantingModel model = ds.getValue(PlantingModel.class);
+                           treeType = model.getTypeOfTrees();
+                           if (treeType.matches("Economic")) {
+                               noEcoAffoTree = model.getNoOfTrees();
+                               //Log.d("ecotree",""+noEcoAffoTree);
+                               treenoEco = treenoEco + Integer.parseInt(noEcoAffoTree);
+                           } else if (treeType.matches("Non Economics")) {
+                               noNEcoAffoTree = model.getNoOfTrees();
+                               treenoNonEco = treenoNonEco + Integer.parseInt(noNEcoAffoTree);
 
-            }
-        });
+                           }
+                       }
+                   } catch (Exception e){
 
-        defRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+                   }
+               }
 
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    DeforestationModel defmodel = ds.getValue(DeforestationModel.class);
-                    treeTypeDef = defmodel.getTypeOfTrees();
+               @Override
+               public void onCancelled(DatabaseError databaseError) {
 
-                    if (treeTypeDef.matches("Economic")){
-                        noEcoDefTree =defmodel.getNoOfTrees();
-                        defTreeNoEco=defTreeNoEco+Integer.parseInt(noEcoDefTree);
-                    }else  if (treeTypeDef.matches("Non Economics")){
-                        noNonEcoDefTree =defmodel.getNoOfTrees();
-                        defTreeNoNonEco=defTreeNoNonEco+Integer.parseInt(noNonEcoDefTree);
-                    }
+               }
+           });
 
-                }
+           defRef.addListenerForSingleValueEvent(new ValueEventListener() {
+               @Override
+               public void onDataChange(DataSnapshot dataSnapshot) {
 
-            }
+                   try {
+                       for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                           DeforestationModel defmodel = ds.getValue(DeforestationModel.class);
+                           treeTypeDef = defmodel.getTypeOfTrees();
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                           if (treeTypeDef.matches("Economic")){
+                               noEcoDefTree =defmodel.getNoOfTrees();
+                               defTreeNoEco=defTreeNoEco+Integer.parseInt(noEcoDefTree);
+                           }else  if (treeTypeDef.matches("Non Economics")){
+                               noNonEcoDefTree =defmodel.getNoOfTrees();
+                               defTreeNoNonEco=defTreeNoNonEco+Integer.parseInt(noNonEcoDefTree);
+                           }
 
-            }
-        });
+                       }
+                   }catch (Exception e){
+                       e.printStackTrace();
+                   }
+
+               }
+
+               @Override
+               public void onCancelled(DatabaseError databaseError) {
+
+               }
+           });
 
 
-        displayAfforestation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("treeNo",""+treenoEco);
-                tvAfforestEconomics.setText(""+treenoEco);
-                tvAfforestNonEco.setText(""+treenoNonEco);
-                tvDeforestEconomics.setText(""+defTreeNoEco);
-                tvDeforestNonEco.setText(""+defTreeNoNonEco);
+           displayAfforestation.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
+                   //Log.d("treeNo",""+treenoEco);
+                   tvAfforestEconomics.setText(""+treenoEco);
+                   tvAfforestNonEco.setText(""+treenoNonEco);
+                   tvDeforestEconomics.setText(""+defTreeNoEco);
+                   tvDeforestNonEco.setText(""+defTreeNoNonEco);
 
-                allAdditionRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+                   allAdditionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                       @Override
+                       public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        AllTotal allmodel = dataSnapshot.getValue(AllTotal.class);
-                        int aff = allmodel.getAfforestation();
-                        int def = allmodel.getDeforestation();
+                           try {
+                               AllTotal allmodel = dataSnapshot.getValue(AllTotal.class);
+                               int aff = allmodel.getAfforestation();
+                               int def = allmodel.getDeforestation();
 
-                        tvAllAfforestation.setText(""+aff);
-                        tvAllDeforestation.setText(""+def);
+                               tvAllAfforestation.setText(""+aff);
+                               tvAllDeforestation.setText(""+def);
+                           }catch (Exception e){
+                               e.printStackTrace();
+                           }
 
-                    }
+                       }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                       @Override
+                       public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                       }
+                   });
 
-            }
-        });
+               }
+           });
 
+       } catch (Exception e){
+           e.printStackTrace();
+       }
 
 
     }

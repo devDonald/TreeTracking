@@ -74,6 +74,7 @@ public class Home extends AppCompatActivity
     private Util util = new Util();
     private FirebaseAuth.AuthStateListener authListener;
     private DatabaseReference userRef;
+    private String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,24 +89,34 @@ public class Home extends AppCompatActivity
         userRef = FirebaseDatabase.getInstance().getReference().child("Users");
         //get current user
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        final String uid = user.getUid();
-        Log.d("uid",""+uid);
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                SignUpModel model = dataSnapshot.child(uid).getValue(SignUpModel.class);
-                fName=model.getFirstName();
-                lName=model.getLastName();
-                country = model.getCountry();
+          uid= user.getUid();
 
-                Log.d("lname",""+lName);
+
+        Log.d("uid",""+uid);
+
+
+        userRef.child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                try {
+                    SignUpModel model = dataSnapshot.getValue(SignUpModel.class);
+                    fName=model.getFirstName();
+                    lName=model.getLastName();
+                    country = model.getCountry();
+
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                Log.d("country",""+country);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
+
 
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -511,9 +522,11 @@ public class Home extends AppCompatActivity
             bound_dispute.putExtra("long", longitude);
             startActivity(bound_dispute);
 
-        }
+        } else if (id==R.id.nav_about_us){
 
-        else if (id == R.id.nav_logout) {
+            Intent about = new Intent(Home.this, AboutUs.class);
+            startActivity(about);
+        } else if (id == R.id.nav_logout) {
             if (util.isNetworkAvailable(activity)) {
                 mAuth.signOut();
 

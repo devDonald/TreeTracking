@@ -31,6 +31,7 @@ public class SendFeedbacks extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private String uid;
+    private DatabaseReference userRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

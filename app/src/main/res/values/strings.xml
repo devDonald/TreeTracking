@@ -75,5 +75,24 @@
     <string name="name_of_disputer_2">Name of Disputer 2</string>
     <string name="email_of_disputer_1">Email of Disputer 1</string>
     <string name="name_of_disputer_1">Name of Disputer 1</string>
+    <string name="about_us">About Us</string>
+    <string name="about_us_title"> Welcome to the Seldavine Tree Tracker App</string>
+    <string name="about_us_text"> The Seldavine Tree Tracker App Enables tracking of planted trees,
+        forest fire and removed trees with the ability to take tree coordinates,
+        no of trees, reporter name, tree(s) types and tree(s) image.
+        It also enables reporting of resolution of boundary disputes with
+        a copy of the agreement sent to both parties and the witnesses via their emails.
+        Every reporter gets 2 points for reporting a planted economic tree
+        and 1 point for reporting a planted non economic tree and a removed tree.
+
+    </string>
+    <string name="muta">1 planted Economic tree reported= 2points= 1 Muta</string>
+    <string name="madiba"> 1 planted non Economic tree reported = 1 point = 1 Madiba</string>
+    <string name="ghandi"> 1 removed tree reported = 1 point = 1 Ghandi</string>
+    <string name="info2">Phone number: +2348059069092
+    </string>
+    <string name="info1">website: http://www.seldavine.com </string>
+    <string name="info3">email: seldaven@gmail.com</string>
+    <string name="info4">© Seldavine Tree Tracker, 2018</string>
 
 </resources>

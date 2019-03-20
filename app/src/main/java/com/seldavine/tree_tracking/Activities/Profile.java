@@ -3,6 +3,7 @@ package com.seldavine.tree_tracking.Activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -10,7 +11,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -169,7 +173,7 @@ public class Profile extends AppCompatActivity {
                 tvGhandiPoints.setText(""+gandi/2);
 
                 String user_image = dataSnapshot.child("userImage").getValue(String.class);
-                Picasso.with(Profile.this).load(user_image).into(userImage);
+                Picasso.get().load(user_image).into(userImage);
             }
 
             @Override
@@ -196,18 +200,28 @@ public class Profile extends AppCompatActivity {
         {
            Uri imageUri = data.getData();
 
-                StorageReference file = userPics.child("ProfileImages").child(imageUri.getLastPathSegment());
-                file.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Uri imagePath = taskSnapshot.getDownloadUrl();
-                        userRef.child(uid).child("userImage").setValue(imagePath.toString());
-                        refreshImage();
-                        MDToast.makeText(getApplication(),"image Added",
-                                MDToast.LENGTH_LONG, MDToast.TYPE_SUCCESS).show();
+           final StorageReference file = userPics.child("ProfileImages").child(imageUri.getLastPathSegment());
 
+            Task<Uri> uriTask = file.putFile(imageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()){
+                        throw task.getException();
                     }
-                });
+                    return file.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    Uri imagePath = task.getResult();
+
+                    userRef.child(uid).child("userImage").setValue(imagePath.toString());
+                    refreshImage();
+                    MDToast.makeText(getApplication(),"image Added",
+                            MDToast.LENGTH_LONG, MDToast.TYPE_SUCCESS).show();
+                }
+            });
+
 
         }
 
@@ -218,7 +232,7 @@ public class Profile extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String user_image = dataSnapshot.child("userImage").getValue(String.class);
-                Picasso.with(Profile.this).load(user_image).into(userImage);
+                Picasso.get().load(user_image).into(userImage);
             }
 
             @Override

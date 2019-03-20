@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,7 +22,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.seldavine.tree_tracking.Model.AllTotal;
 import com.seldavine.tree_tracking.Model.DeforestationModel;
 import com.seldavine.tree_tracking.R;
@@ -56,9 +61,9 @@ public class ReportDeforestation extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private String uid,noTrees,treeType,country,id,firstname, lastname, mLat, mLong,manualAddress;
-    private ProgressDialog dialog;
     private StorageReference treeImageRef;
     private DatabaseReference subtree;
+    private KProgressHUD hud;
 
 
 
@@ -74,6 +79,15 @@ public class ReportDeforestation extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         uid = user.getUid();
 
+        hud = KProgressHUD.create(ReportDeforestation.this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please Wait")
+                .setDetailsLabel("Reporting Deforestation...")
+                .setCancellable(true)
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f)
+                .setBackgroundColor(Color.GREEN)
+                .setAutoDismiss(true);
 
         treeImageRef = FirebaseStorage.getInstance().getReference();
 
@@ -84,7 +98,6 @@ public class ReportDeforestation extends AppCompatActivity {
         uNoofTrees = findViewById(R.id.etNoTrees1);
         submitTree = findViewById(R.id.submit_tree1);
         spTreeType = findViewById(R.id.spTreeType1);
-        dialog= new ProgressDialog(this);
         mManualLat= findViewById(R.id.etDefManualLat);
         mManualLong= findViewById(R.id.etDefManualLong);
         mManualAddress = findViewById(R.id.etDefManualAddress);
@@ -194,9 +207,8 @@ public class ReportDeforestation extends AppCompatActivity {
     }
 
     public void uploadImage(){
-        dialog.setMessage("Reporting Deforestation...");
-        dialog.show();
-        StorageReference mountainsRef = treeImageRef.child("TreeImages").child(uid).child(id).child("image.jpg");
+        hud.show();
+        final StorageReference mountainsRef = treeImageRef.child("TreeImages").child(uid).child(id).child("image.jpg");
         if (displayTree!=null) {
 
             displayTree.setDrawingCacheEnabled(true);
@@ -207,10 +219,21 @@ public class ReportDeforestation extends AppCompatActivity {
             byte[] data = baos.toByteArray();
 
             UploadTask uploadTask = mountainsRef.putBytes(data);
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+            Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Uri downloadURI = taskSnapshot.getDownloadUrl();
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()){
+                        throw task.getException();
+                    }
+
+                    return mountainsRef.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    Uri downloadURI = task.getResult();
+
                     DeforestationModel model = new DeforestationModel(lastname + " " + firstname,
                             latitude + ", " + longitude,treeType,noTrees);
 
@@ -238,7 +261,7 @@ public class ReportDeforestation extends AppCompatActivity {
                         }
                     });
                     addTreeRef.child(id).child("treeImage").setValue(downloadURI.toString());
-                    dialog.dismiss();
+                    hud.dismiss();
                     MDToast.makeText(getApplication(),"Deforestation reported Successfully",
                             MDToast.LENGTH_LONG, MDToast.TYPE_SUCCESS).show();
 
